@@ -5,7 +5,9 @@ local is_windows = os.getenv("OS") and os.getenv("OS"):lower():find("windows")
 local home = wezterm.home_dir:gsub('\\', '/')
 
 -- Terminal
-config.default_prog = { "C:\\Program Files\\Git\\bin\\bash.exe", "-l" }
+if is_windows then
+  config.default_prog = { "C:\\Program Files\\Git\\bin\\bash.exe", "-l" }
+end
 
 -- UI 
 -- Customize rose pine theme slightly
