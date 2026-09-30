@@ -9,7 +9,7 @@ Includes nvim .lua config file, lock file and stylua config
 includes wezterm .lua config file 
 
 ## Installing the configuration on your machine
-`cd` into the home directory on your machine -- usually `cd ~`
+`cd ~` to navigate to your machine's home directory
 `git clone git@github.com:patrick-long/dev-dotfiles.git`, which will automatically create the `dev-dotfiles/` dir inside of your home directory
 
 ### Windows
