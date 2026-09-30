@@ -1,0 +1,20 @@
+{
+  "plugins": {
+    "conform.nvim": {
+      "rev": "016802de402556da54c36bd7359b441266b01cdd",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "mini.pick": {
+      "rev": "360c1bb33610e030698d07ed15969ab4762dbcd6",
+      "src": "https://github.com/nvim-mini/mini.pick"
+    },
+    "nvim-lspconfig": {
+      "rev": "a9bb4d5f4276aa5cddc015faa3ecc5a7b5a26b14",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "rose-pine": {
+      "rev": "ff483051a47e27d84bdef47703538df1ed9f4a47",
+      "src": "https://github.com/rose-pine/neovim"
+    }
+  }
+}
