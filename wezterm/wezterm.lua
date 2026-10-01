@@ -29,7 +29,7 @@ local function collect_dirs(path, depth, map)
   if depth == 0 then return end
 
   for _, entry in ipairs(wezterm.read_dir(path)) do
-    entry = entry:gsub('\\', '/') 
+    entry = entry:gsub('\\', '/')
 
     if pcall(wezterm.read_dir, entry) then
       table.insert(map, { id = entry, label = entry:sub(#home + 2) })
@@ -41,19 +41,29 @@ end
 wezterm.on('gui-startup', function(cmd)
   local _, pane, window = wezterm.mux.spawn_window(cmd or {})
 
+  -- Project picker waits for this pane's shell_ready signal
+  wezterm.GLOBAL.startup_pane_id = pane:pane_id()
+
   -- Maximize window
   window:gui_window():maximize()
+end)
+
+-- Sent by .bashrc once the ssh-agent prompts are done
+wezterm.on('user-var-changed', function(window, pane, name)
+  if name ~= 'shell_ready' or pane:pane_id() ~= wezterm.GLOBAL.startup_pane_id then return end
+
+  wezterm.GLOBAL.startup_pane_id = nil
 
   local dirs = {}
 
   collect_dirs(home .. '/deepspacerobots', 2, dirs)
   collect_dirs(home .. '/personal-projects', 1, dirs)
 
-  window:gui_window():perform_action(wezterm.action.InputSelector {
+  window:perform_action(wezterm.action.InputSelector {
     title = 'Pick a project',
     fuzzy = true,
     choices = dirs,
-    action = wezterm.action_callback(function(win, first, dir)
+    action = wezterm.action_callback(function(_, first, dir)
       if not dir then return end
 
       -- cd into chosen directory in initial pane
