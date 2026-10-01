@@ -101,6 +101,10 @@ vim.keymap.set(
   '<Cmd>Pick buffers<CR>',
   { desc = 'Open buffers' }
 )                                                                 -- remap ' fb' to open buffers
+
+vim.keymap.set('n', '<leader>gh', 'K')                            -- remap ' gh' to show docs
+vim.keymap.set('n', '<leader>gI', '<C-]>')                        -- remap ' gI' to go to definition
+vim.keymap.set('n', '<leader><C-_>', '<C-w>d')                    -- remap ' ctrl+/' to show errors/warnings for a line
 -- stylua: ignore end
 
 -- -- [[ BASIC AUTOCOMMANDS ]].
@@ -147,7 +151,69 @@ vim.pack.add({
   { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
   "https://github.com/nvim-mini/mini.pick",
   "https://github.com/neovim/nvim-lspconfig",
+  "https://github.com/mason-org/mason.nvim",
+  "https://github.com/mason-org/mason-lspconfig.nvim"
 })
+
+-- Let lua_ls know about Neovim's API so vim isn't flagged as undefined
+vim.lsp.config("lua_ls", {
+  settings = {
+    Lua = {
+      runtime = { version = "LuaJIT" },
+      workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
+    },
+  },
+})
+
+-- Install these servers if missing
+-- Installed servers start automatically
+require("mason").setup()
+
+require("mason-lspconfig").setup({
+  ensure_installed = {
+    "ts_ls",
+    "eslint",
+    "bashls",
+    "lua_ls",
+    "cssls",
+    "tailwindcss",
+    "html",
+    "jsonls",
+    "twiggy_language_server"
+  },
+})
+
+-- Show diagnostics inline
+vim.diagnostic.config({ virtual_text = true })
+
+-- Show the completion menu without selecting or inserting an item, so typing keeps filtering it
+vim.opt.completeopt = { "menuone", "noselect", "popup" }
+
+-- Printable ASCII chars except space, used to trigger LSP completion on every keypress
+local completion_trigger_chars = {}
+for i = 33, 126 do
+  table.insert(completion_trigger_chars, string.char(i))
+end
+
+-- Open LSP completion automatically
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+    if client and client:supports_method("textDocument/completion") then
+      client.server_capabilities.completionProvider.triggerCharacters = completion_trigger_chars
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+    end
+  end
+})
+
+-- Open LSP completion manually
+vim.keymap.set(
+  'i',
+  '<C-l>',
+  vim.lsp.completion.get,
+  { desc = "Show completions" }
+)                                                                 -- remap ctrl+space to list available properties/methods
 
 -- Configure format on save
 require("conform").setup({
