@@ -148,7 +148,7 @@ vim.opt.softtabstop = 2     -- tab/backspace move 2 spaces at a time
 -- Install plugins
 vim.pack.add({
   "https://github.com/stevearc/conform.nvim",
-  { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
+  "https://github.com/navarasu/onedark.nvim",
   "https://github.com/nvim-mini/mini.pick",
   "https://github.com/nvim-mini/mini.diff",
   "https://github.com/neovim/nvim-lspconfig",
@@ -237,11 +237,11 @@ require("conform").setup({
 })
 
 -- Configure theme
-require("rose-pine").setup({
-  variant = "moon"
+require("onedark").setup({
+  style = "warm"
 })
 
-vim.cmd.colorscheme("rose-pine")
+require("onedark").load()
 
 -- Configure fuzzy finder plugin
 require("mini.pick").setup()
