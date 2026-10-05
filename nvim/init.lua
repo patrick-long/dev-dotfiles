@@ -102,9 +102,9 @@ vim.keymap.set(
   { desc = 'Open buffers' }
 )                                                                 -- remap ' fb' to open buffers
 
-vim.keymap.set('n', '<leader>gh', 'K')                            -- remap ' gh' to show docs
+vim.keymap.set('n', '<leader>gh', 'K', { remap = true })          -- remap ' gh' to show docs
 vim.keymap.set('n', '<leader>gI', '<C-]>')                        -- remap ' gI' to go to definition
-vim.keymap.set('n', '<leader><C-_>', '<C-w>d')                    -- remap ' ctrl+/' to show errors/warnings for a line
+vim.keymap.set('n', '<leader><C-_>', '<C-w>d', { remap = true })  -- remap ' ctrl+/' to show errors/warnings for a line
 -- stylua: ignore end
 
 -- -- [[ BASIC AUTOCOMMANDS ]].
@@ -150,6 +150,7 @@ vim.pack.add({
   "https://github.com/stevearc/conform.nvim",
   { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
   "https://github.com/nvim-mini/mini.pick",
+  "https://github.com/nvim-mini/mini.diff",
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/mason-org/mason.nvim",
   "https://github.com/mason-org/mason-lspconfig.nvim"
@@ -244,4 +245,12 @@ vim.cmd.colorscheme("rose-pine")
 
 -- Configure fuzzy finder plugin
 require("mini.pick").setup()
+
+-- Configure git diff indicators
+require("mini.diff").setup({
+  view = {
+    style = "sign",
+    signs = { add = "+", change = "~", delete = "-" },
+  },
+})
 
