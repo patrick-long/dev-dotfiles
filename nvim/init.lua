@@ -116,6 +116,13 @@ vim.keymap.set(
   '<Cmd>NvimTreeFindFileToggle<CR>',
   { desc = 'Toggle file tree' }                                   -- remap ' fe' to toggle the file tree
 )
+
+vim.keymap.set(
+  'n',
+  '<C-S-Del>',
+  '<Cmd>%bd<CR>',
+  { desc = 'Close all open buffers' }                             -- remap ctrl+shift+delete to close all file buffers
+)
 -- stylua: ignore end
 
 -- -- [[ BASIC AUTOCOMMANDS ]].
