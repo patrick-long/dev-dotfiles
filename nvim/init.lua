@@ -1,3 +1,7 @@
+-- Disable netrw so nvim-tree handles directories
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -105,6 +109,13 @@ vim.keymap.set(
 vim.keymap.set('n', '<leader>gh', 'K', { remap = true })          -- remap ' gh' to show docs
 vim.keymap.set('n', '<leader>gI', '<C-]>')                        -- remap ' gI' to go to definition
 vim.keymap.set('n', '<leader><C-_>', '<C-w>d', { remap = true })  -- remap ' ctrl+/' to show errors/warnings for a line
+
+vim.keymap.set(
+  'n',
+  '<leader>fe',
+  '<Cmd>NvimTreeFindFileToggle<CR>',
+  { desc = 'Toggle file tree' }                                   -- remap ' fe' to toggle the file tree
+)
 -- stylua: ignore end
 
 -- -- [[ BASIC AUTOCOMMANDS ]].
@@ -151,6 +162,7 @@ vim.pack.add({
   "https://github.com/navarasu/onedark.nvim",
   "https://github.com/nvim-mini/mini.pick",
   "https://github.com/nvim-mini/mini.diff",
+  "https://github.com/nvim-tree/nvim-tree.lua",
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/mason-org/mason.nvim",
   "https://github.com/mason-org/mason-lspconfig.nvim"
@@ -238,7 +250,7 @@ require("conform").setup({
 
 -- Configure theme
 require("onedark").setup({
-  style = "warm"
+  style = "dark"
 })
 
 require("onedark").load()
@@ -252,5 +264,12 @@ require("mini.diff").setup({
     style = "sign",
     signs = { add = "+", change = "~", delete = "-" },
   },
+})
+
+-- Configure file tree sidebar
+require("nvim-tree").setup({
+  view = { side = "right", width = 35 },
+  update_focused_file = { enable = true },
+  renderer = { group_empty = true },
 })
 
