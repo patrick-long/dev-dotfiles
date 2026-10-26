@@ -119,6 +119,11 @@ config.keys = {
     mods = "CTRL|SHIFT",
     action = action.DisableDefaultAssignment
   },
+  {
+    key = "Backspace",
+    mods = "CTRL",
+    action = action.SendString "\x17"
+  },
 }
 
 return config
