@@ -257,7 +257,11 @@ require("conform").setup({
 
 -- Configure theme
 require("onedark").setup({
-  style = "dark"
+  style = "dark",
+  highlights = {
+    MiniDiffOverChange = { bg = "$dark_red" },     -- removed words in diff overlay
+    MiniDiffOverChangeBuf = { bg = "$dark_cyan" }, -- added words in diff overlay
+  },
 })
 
 require("onedark").load()
